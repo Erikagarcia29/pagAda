@@ -12,7 +12,7 @@ import ar.com.ada.api.pagada.entities.Pais.TipoIdImpositivoEnum;
 @Entity
 @Table(name = "deudor")
 public class Deudor {
-
+ ///comentario
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deudor_id")
@@ -25,3 +25,4 @@ public class Deudor {
     private String idImpositivo;
     private String nombre;
 } 
+
