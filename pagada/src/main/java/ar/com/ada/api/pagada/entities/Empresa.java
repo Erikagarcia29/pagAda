@@ -1,5 +1,7 @@
 package ar.com.ada.api.pagada.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -65,4 +67,26 @@ public class Empresa {
         this.nombre = nombre;
     }
 
-} 
+    public List<Servicio> getServiciosQueOfrece() {
+
+        return serviciosQueOfrece;
+
+    }
+
+    public void setServiciosQueOfrece(List<Servicio> serviciosQueOfrece) {
+
+        this.serviciosQueOfrece = serviciosQueOfrece;
+
+    }
+
+    // Relacion bidirecional para que los objetos se apunten entre si
+
+    public void agregarServicio(Servicio servicio) {
+
+        this.serviciosQueOfrece.add(servicio);
+
+        servicio.setEmpresa(this);
+
+    }
+
+}
