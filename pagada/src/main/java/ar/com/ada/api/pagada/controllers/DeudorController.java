@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.pagada.entities.Deudor;
+import ar.com.ada.api.pagada.models.request.DeudorRequest;
 import ar.com.ada.api.pagada.models.response.GenericResponse;
+import ar.com.ada.api.pagada.services.DeudorService;
 
 @RestController
 public class DeudorController {

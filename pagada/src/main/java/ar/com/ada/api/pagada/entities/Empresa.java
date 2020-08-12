@@ -1,12 +1,15 @@
 package ar.com.ada.api.pagada.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import ar.com.ada.api.pagada.entities.Pais.TipoIdImpositivoEnum;
@@ -26,6 +29,10 @@ public class Empresa {
     @Column(name = "id_impositivo")
     private String idImpositivo;
     private String nombre;
+
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+
+    private List<Servicio> serviciosQueOfrece = new ArrayList<>();
 
     public Integer getEmpresaId() {
         return empresaId;
