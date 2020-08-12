@@ -3,6 +3,7 @@ package ar.com.ada.api.pagada.entities;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -39,7 +40,7 @@ public class Servicio {
 
     private TipoServicio tipoServicio;
 
-    @Column(name = "tipo_comprobante")
+    @Column(name = "tipo_comprobante_id")
 
     private TipoComprobanteEnum tipoComprobante;
 
@@ -47,7 +48,7 @@ public class Servicio {
 
     private Date fechaEmision;
 
-    @Column(name = "fecha_vencimento")
+    @Column(name = "fecha_vencimiento")
 
     private Date fechaVencimiento;
 
@@ -158,65 +159,54 @@ public class Servicio {
     public Date getFechaVencimiento() {
 
         return fechaVencimiento;
-
     }
 
     public void setFechaVencimiento(Date fechaVencimiento) {
 
         this.fechaVencimiento = fechaVencimiento;
-
     }
 
     public BigDecimal getImporte() {
 
         return importe;
-
     }
 
     public void setImporte(BigDecimal importe) {
 
         this.importe = importe;
-
     }
 
     public String getCodigoBarras() {
 
         return codigoBarras;
-
     }
 
     public void setCodigoBarras(String codigoBarras) {
 
         this.codigoBarras = codigoBarras;
-
     }
 
     public EstadoEnum getEstadoId() {
 
         return estadoId;
-
     }
 
     public void setEstadoId(EstadoEnum estadoId) {
 
         this.estadoId = estadoId;
-
     }
 
     public Pago getPago() {
 
         return pago;
-
     }
 
     // Relacion bidireccional
 
     public void setPago(Pago pago) {
-
         this.pago = pago; // le pongo el pago al servicio
 
         pago.setServicio(this); // Le pongo el servicio al pago
-
     }
 
 }
