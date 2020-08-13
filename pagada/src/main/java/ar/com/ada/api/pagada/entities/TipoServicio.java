@@ -16,7 +16,7 @@ public class TipoServicio {
 
     @Column(name = "tipo_servicio_id")
 
-    private Integer TipoServicioId;
+    private Integer tipoServicioId;
 
     private String nombre;
 
@@ -24,17 +24,7 @@ public class TipoServicio {
 
     private List<Servicio> serviciosEmitidos = new ArrayList<>();
 
-    public Integer getTipoServicioId() {
-
-        return TipoServicioId;
-
-    }
-
-    public void setTipoServicioId(Integer tipoServicioId) {
-
-        TipoServicioId = tipoServicioId;
-
-    }
+   
 
     public String getNombre() {
 
@@ -58,6 +48,14 @@ public class TipoServicio {
 
         this.serviciosEmitidos = serviciosEmitidos;
 
+    }
+
+    public Integer getTipoServicioId() {
+        return tipoServicioId;
+    }
+
+    public void setTipoServicioId(Integer tipoServicioId) {
+        this.tipoServicioId = tipoServicioId;
     }
 
 }
