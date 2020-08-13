@@ -13,6 +13,7 @@ import ar.com.ada.api.pagada.entities.Deudor;
 import ar.com.ada.api.pagada.models.request.DeudorRequest;
 import ar.com.ada.api.pagada.models.response.GenericResponse;
 import ar.com.ada.api.pagada.services.DeudorService;
+import ar.com.ada.api.pagada.services.DeudorService.DeudorValidacionEnum;
 
 @RestController
 public class DeudorController {
@@ -36,6 +37,19 @@ public class DeudorController {
 
         GenericResponse gr = new GenericResponse();
 
+        DeudorValidacionEnum resultadoValidacion = deudorService.validarDeudorInfo(dr.paisId, dr.tipoIdImpositivo,
+
+                dr.idImpositivo, dr.nombre);
+
+        if (resultadoValidacion != DeudorValidacionEnum.OK) {
+
+            gr.isOk = false;
+
+            gr.message = "No se pudo validar el deudor " + resultadoValidacion.toString();
+
+            return ResponseEntity.badRequest().body(gr); // http 400
+
+        }
         //
 
         Deudor deudor = deudorService.crearDeudor(dr.paisId, dr.tipoIdImpositivo, dr.idImpositivo, dr.nombre);
