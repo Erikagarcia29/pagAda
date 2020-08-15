@@ -52,6 +52,14 @@ public class EmpresaService {
 
         // 4 forma: stream
 
+        // idImpositivo.chars().filter(caracter -> condicion) te devuelve aqeullos que
+
+        // cumplan la condicion
+
+        // !Character.isDigit(c) : significa que NO sea un digito
+
+        // con el count() nos devuelve la cantidad de items.
+
         String idImpositivo = emp.getIdImpositivo();
 
         // 1forma: "A3939393"
@@ -117,6 +125,16 @@ public class EmpresaService {
         NOMBRE_INVALIDO, // Nombre tenga algun problema
 
         ID_IMPOSITIVO_INVALIDO // ID impositivo tenga un problema
+
+    }
+
+    public Empresa buscarEmpresaPorId(Integer empresaId) {
+
+        // en este caso para reusar el findById que no devuelva optional
+
+        // tenemos qeu castear el Integer a int
+
+        return empresaRepository.findById((int) empresaId);
 
     }
 }

@@ -5,6 +5,7 @@ import java.util.Date;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,7 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
+@Entity
 @Table(name = "servicio")
 public class Servicio {
     @Id
@@ -43,6 +44,10 @@ public class Servicio {
     @Column(name = "tipo_comprobante_id")
 
     private TipoComprobanteEnum tipoComprobante;
+    
+    private String numero;
+    
+    private String moneda;
 
     @Column(name = "fecha_emision")
 
@@ -207,6 +212,22 @@ public class Servicio {
         this.pago = pago; // le pongo el pago al servicio
 
         pago.setServicio(this); // Le pongo el servicio al pago
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 
 }
