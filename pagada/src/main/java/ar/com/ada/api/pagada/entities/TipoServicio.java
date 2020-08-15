@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 
 @Table(name = "tipo_servicio")
@@ -19,7 +21,7 @@ public class TipoServicio {
     private Integer tipoServicioId;
 
     private String nombre;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "tipoServicio", cascade = CascadeType.ALL)
 
     private List<Servicio> serviciosEmitidos = new ArrayList<>();

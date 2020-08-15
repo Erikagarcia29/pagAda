@@ -10,10 +10,12 @@ import ar.com.ada.api.pagada.entities.Deudor;
 import ar.com.ada.api.pagada.entities.Empresa;
 import ar.com.ada.api.pagada.entities.Servicio;
 import ar.com.ada.api.pagada.entities.TipoServicio;
+import ar.com.ada.api.pagada.models.request.ServicioRequest;
 import ar.com.ada.api.pagada.models.response.GenericResponse;
 import ar.com.ada.api.pagada.services.DeudorService;
 import ar.com.ada.api.pagada.services.EmpresaService;
 import ar.com.ada.api.pagada.services.ServicioService;
+import ar.com.ada.api.pagada.services.ServicioService.ServicioValidacionEnum;
 
 @RestController
 public class ServicioController {
