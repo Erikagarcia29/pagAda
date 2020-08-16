@@ -1,5 +1,6 @@
 package ar.com.ada.api.pagada.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -153,24 +154,35 @@ public class ServicioController {
 
             @RequestParam(name = "empresa", required = false) Integer empresa,
 
-            @RequestParam(name = "deudor", required = false) Integer deudor) {
+            @RequestParam(name = "deudor", required = false) Integer deudor, 
 
+            @RequestParam(name = "historico",required = false) boolean historico) {
+            
         List<Servicio> servicios = new ArrayList<>();
 
         if (empresa == null)
 
             servicios = servicioService.listarServicios();
 
-        else {
+        else if  ( deudor == null){ 
+           
 
             // LISTA los que son de la empresa y son pendientes.
 
             servicios = servicioService.listarServiciosPendientesPorEmpresaId(empresa);
 
+        }else if (historico == false){
+            servicios = servicioService.listarServiciosPendientesPorDeudorIdyEmpresaId(deudor, empresa);
+
+        }else if (historico == true){
+            servicios = servicioService.historicoPorEmpresaIdyDeudorId(deudor, empresa);
         }
 
         return ResponseEntity.ok(servicios);
 
     }
+    @GetMapping("/api/servicios")
+    public ResponseEntity<GenericResponse> obtener_Servicio_Por_Codido_Barras(@RequestBody ServicioRequest servicioReq){
 
+    } return null;
 }
