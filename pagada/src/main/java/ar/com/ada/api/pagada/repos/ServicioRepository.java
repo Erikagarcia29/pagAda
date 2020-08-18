@@ -10,6 +10,8 @@ import ar.com.ada.api.pagada.entities.Servicio;
 public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
 
     @Query("Select s from Servicio s where s.empresa.empresaId = :empresaId") // JPQL
+    // @Query(value = "Select * from servicio where s.empresa_id = ?", nativeQuery =
+    // true)
 
     List<Servicio> findAllEmpresaId(Integer empresaId);
 
@@ -18,10 +20,16 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
 
     List<Servicio> findAllPendientesEmpresaId(Integer empresaId);
 
-    @Query("Select s from Servicio s where s.deudor.deudorId = :deudorId and s.estadoId = 0 and s.empresa.empresaId = :empresaId")
-	List<Servicio> findAllPendientesPorDeudorIdyEmpresaId(Integer deudorId, Integer empresaId);
+    @Query("select s from Servicio s where s.empresa.empresaId = :empresaId and s.deudor.deudorId = :deudorId and s.estadoId = 0")
 
-    @Query("Select s from Servicio s where s.deudor.deudorId = :deudorId and s.empresa.empresaId = :empresaId")
-	List<Servicio> findAllPorDeudorIdyEmpresaId(Integer deudorId, Integer empresaId);
+    public List<Servicio> findAllPendientesPorDeudorIdyEmpresaId(Integer empresaId, Integer deudorId);
+
+    @Query("select s from Servicio s where s.empresa.empresaId = :empresaId and s.deudor.deudorId = :deudorId")
+
+    public List<Servicio> findAllPorDeudorIdyEmpresaId(Integer empresaId, Integer deudorId);
+
+    @Query("select s from Servicio s where s.codigoBarras = :codigoBarras")
+
+    public List<Servicio> findAllByCodigoBarras(String codigoBarras);
 
 }

@@ -134,13 +134,19 @@ public class ServicioService {
 
     }
 
-	public List<Servicio> listarServiciosPendientesPorDeudorIdyEmpresaId(Integer deudorId, Integer empresaId) {
+    public List<Servicio> listarServiciosPendientesPorDeudorIdyEmpresaId(Integer deudorId, Integer empresaId) {
 
-		return servicioRepo.findAllPendientesPorDeudorIdyEmpresaId(deudorId, empresaId);
-	}
+        return servicioRepo.findAllPendientesPorDeudorIdyEmpresaId(deudorId, empresaId);
+    }
 
-	public List<Servicio> historicoPorEmpresaIdyDeudorId(Integer deudorId, Integer empresaId) {
-		return servicioRepo.findAllPorDeudorIdyEmpresaId(deudorId, empresaId);
-	}
+    public List<Servicio> historicoPorEmpresaIdyDeudorId(Integer deudorId, Integer empresaId) {
+        return servicioRepo.findAllPorDeudorIdyEmpresaId(deudorId, empresaId);
+    }
+
+    public List<Servicio> listarPorCodigoBarras(String codigoBarras) {
+
+        return servicioRepo.findAllByCodigoBarras(codigoBarras);
+
+    }
 
 }
