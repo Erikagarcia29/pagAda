@@ -81,7 +81,7 @@ public class Servicio {
 
     public enum EstadoEnum {
 
-        PENDIENTE, PAGADO, ANULADO
+        PENDIENTE, PAGADO, ANULADO//, PAGO_PARCIAL puede ser un estado a futuro, otro: PAGO_ADELANTADO
 
     }
 

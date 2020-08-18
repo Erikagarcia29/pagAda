@@ -31,6 +31,8 @@ public class Pago {
     @Column(name = "importe_pagado")
 
     private BigDecimal importePagado;
+    
+    private String moneda;
 
     @Column(name = "medio_pago")
 
@@ -46,7 +48,7 @@ public class Pago {
 
     private Servicio servicio;
 
-    private enum MedioPagoEnum {
+    public enum MedioPagoEnum {
 
         TARJETA, TRANSFERENCIA, DEPOSITO, ADADIGITAL
 
@@ -122,5 +124,13 @@ public class Pago {
 
         this.servicio = servicio;
 
+    }
+
+    public String getMoneda() {
+        return moneda;
+    }
+
+    public void setMoneda(String moneda) {
+        this.moneda = moneda;
     }
 }

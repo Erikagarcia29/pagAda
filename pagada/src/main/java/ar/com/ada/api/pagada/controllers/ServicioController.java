@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.ada.api.pagada.entities.Deudor;
 import ar.com.ada.api.pagada.entities.Empresa;
+import ar.com.ada.api.pagada.entities.OperacionPago;
 import ar.com.ada.api.pagada.entities.Servicio;
 import ar.com.ada.api.pagada.entities.TipoServicio;
+import ar.com.ada.api.pagada.models.request.InfoPagoRequest;
 import ar.com.ada.api.pagada.models.request.ServicioRequest;
 import ar.com.ada.api.pagada.models.response.GenericResponse;
 import ar.com.ada.api.pagada.services.DeudorService;
@@ -39,16 +42,13 @@ public class ServicioController {
 
     @PostMapping("/api/servicios")
 
-    public ResponseEntity<GenericResponse> crearServicio(@RequestBody ServicioRequest servicioReq) {  
+    public ResponseEntity<GenericResponse> crearServicio(@RequestBody ServicioRequest servicioReq) {
 
         GenericResponse genericResponse = new GenericResponse();
 
         // 1) instanciar el objeto(en este caso el servicio)
-
         // 2) validar servicio ,si no es todo ok q devuleva un 400
-
         // 3) crear en la base de datos
-
         // Comenzamos con el 1) instanciar el objeto(en este caso el servicio)
 
         Servicio servicio = new Servicio();
@@ -121,28 +121,20 @@ public class ServicioController {
 
             return ResponseEntity.ok(genericResponse);
 
-        } 
+        }
 
     }
 
     /*
      * 7) Obtener servicios: todos devuelven el formato json Lista de Servicio GET
      * /api/servicios : obtiene todos los servicios. GET /api/servicios?empresa=999
-     * 
      * : obtiene todos los servicios PENDIENTES de una empresa especifica Formato
-     * 
      * JSon Esperado: List<Servicio> GET /api/servicios?empresa=999&deudor=888:
-     * 
      * obtiene todos los servicios PENDIENTES de una empresa y un deudor Formato
-     * 
      * JSon Esperado: List<Servicio> GET
-     * 
      * /api/servicios?empresa=999&deudor=888&historico=true: obtiene todos los
-     * 
      * servicios de una empresa y un deudor(pagados, anulados o pendientes, o sea
-     * 
      * todos) GET /api/servicios?codigo=AAAAAAA : obtiene un servicio en particular
-     * 
      * usando el codigo de Barras.
      */
 
@@ -166,6 +158,7 @@ public class ServicioController {
         if (codigo != null){  
 
             servicios = servicioService.listarPorCodigoBarras(codigo);
+        }
 
         else if  ( empresa != null && deudor == null){ 
            
@@ -241,4 +234,124 @@ public class ServicioController {
           */                  
      
           return ResponseEntity.ok(servicios);
+        }
+
+    /** 
+     * Pagar Servicio:
+     * POST /api/servicios/{id}: paga un servicio especifico con el siguiente
+     * Payload(RequestBody):
+     * {
+     * "importePagado": 3999.00,
+     * "fechaPago": "2020-05-06",
+     * "medioPago": "TRANSFERENCIA", //TARJETA, DEPOSITO, ETC
+     * "infoMedioPago": "nroTarjeta/cbu/etc"
+     * }
+     */
+
+    @PostMapping("/api/servicios/{id}")
+
+    public ResponseEntity<GenericResponse> pagarServicio(@PathVariable Integer id, @RequestBody InfoPagoRequest pago) {
+
+        GenericResponse r = new GenericResponse();
+
+        // To do
+        // buscar servicio por id
+         // verficar que este pendiente de pago
+        // instanciar pago
+        // validar si se esta pagando el total o solo una parte
+        // si se se pago pasarlo de PENDIENTE a PAGADO (al Servicio)
+        // mandar mail si tenemos la info(SI tuviesemos info del que paga)
+        // grabarlo en la db
+        // hacer el metodo para hacer el pago,
+        // todo lo de arriba va en "realizarPago"
+
+        OperacionPago pagoResult = servicioService.realizarPago(id, pago.importePagado, pago.moneda, pago.fechaPago,
+                pago.medioPago, pago.infoMedioPago);
+
+        // En este caso en forma generica y con pocas ganas de hacer algo particular.
+
+        /* 
+         * if (pagoResult.getResultado() != OperacionPagoEnum.REALIZADO) {
+         * r.isOk = false;
+         * r.message = "El pago fue rechazado, motivo : " + pagoResult.getResultado();
+         * return ResponseEntity.badRequest().body(r);
+         * } else {
+         * r.isOk = true;
+         * r.id = pagoResult.getPago().getPagoId();
+         * r.message = "se realizo el pago con exito";
+         * return ResponseEntity.ok(r);
+         * }
+         */
+
+        // En este caso customizo las respuestas
+
+        switch (pagoResult.getResultado()) {
+
+            case RECHAZADO_NO_ACEPTA_PAGO_PARCIAL:
+
+                r.isOk = false;
+
+                r.message = "No acepta pago parcial";
+
+                return ResponseEntity.badRequest().body(r);
+
+            case RECHAZADO_SERVICIO_INEXISTENTE:
+
+                r.isOk = false;
+
+                r.message = "Servicio inexistente";
+
+                return ResponseEntity.badRequest().body(r);
+
+            case RECHAZADO_SERVICIO_YA_PAGO:
+
+                r.isOk = false;
+
+                r.message = "Servicio ya pago";
+
+                return ResponseEntity.badRequest().body(r);
+
+            case ERROR_INESPERADO:
+
+                r.isOk = false;
+
+                r.message = "Error inesperado";
+
+                return ResponseEntity.badRequest().body(r);
+
+            case REALIZADO:
+
+                r.isOk = true;
+
+                r.id = pagoResult.getPago().getPagoId();
+
+                r.message = "se realizo el pago con exito";
+
+                return ResponseEntity.ok(r);
+
+        }
+
+        // error sin nada.
+
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    // UNA CREACION ES DIFERENTE
+
+    // @PostMapping("/api/pagos")
+
+    // public ResponseEntity<GenericResponse> crearPago(@RequestBody InfoPagoRequest
+    // pago){
+
+    // GenericResponse r = new GenericResponse();
+
+    // // To do: instanciarlo
+
+    // // grabarlo en la db a traves del service.
+
+    // return ResponseEntity.ok(r);
+
+    // }
+
 }

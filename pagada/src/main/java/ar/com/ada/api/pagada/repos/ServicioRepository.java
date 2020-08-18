@@ -32,4 +32,6 @@ public interface ServicioRepository extends JpaRepository<Servicio, Integer> {
 
     public List<Servicio> findAllByCodigoBarras(String codigoBarras);
 
+    public Servicio findByServicioId(Integer servicioId);
+
 }
