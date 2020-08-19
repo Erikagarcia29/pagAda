@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import ar.com.ada.api.pagada.entities.Deudor;
 import ar.com.ada.api.pagada.entities.Empresa;
+import ar.com.ada.api.pagada.entities.Pago;
 import ar.com.ada.api.pagada.entities.Pais.TipoIdImpositivoEnum;
 import ar.com.ada.api.pagada.services.DeudorService;
 import ar.com.ada.api.pagada.services.EmpresaService;
@@ -243,6 +244,15 @@ class DemoApplicationTests {
 				deudor.getIdImpositivo(), deudor.getNombre());
 
 		assertTrue(resultado == DeudorValidacionEnum.NOMBRE_INVALIDO);
+
+	}
+
+	@Test
+	void PagoInfoOfuscada(){
+		Pago pago = new pago();
+		pago.setInfoMedioPago("123456789");
+		String infoOfuscada = pago.ofuscarInfoMedioPago();
+		assertEquals("*789", infoOfuscada);
 
 	}
 

@@ -31,7 +31,7 @@ public class Pago {
     @Column(name = "importe_pagado")
 
     private BigDecimal importePagado;
-    
+
     private String moneda;
 
     @Column(name = "medio_pago")
@@ -132,5 +132,18 @@ public class Pago {
 
     public void setMoneda(String moneda) {
         this.moneda = moneda;
+    }
+
+    public String ofuscarInfoMedioPago() {
+        String newInfo = new String();
+
+        for (int i = (this.getInfoMedioPago().length() - 1); i > (this.getInfoMedioPago().length() - 4); i--) {
+
+            newInfo = this.getInfoMedioPago().charAt(i) + newInfo;
+
+        }
+
+        return "*" + newInfo;
+
     }
 }
