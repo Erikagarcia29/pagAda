@@ -135,15 +135,29 @@ public class Pago {
     }
 
     public String ofuscarInfoMedioPago() {
-        String newInfo = new String();
 
-        for (int i = (this.getInfoMedioPago().length() - 1); i > (this.getInfoMedioPago().length() - 4); i--) {
+        int longitud = this.getInfoMedioPago().length();
 
-            newInfo = this.getInfoMedioPago().charAt(i) + newInfo;
+        String infoOfuscada = this.getInfoMedioPago().substring(longitud - 3);
 
-        }
-
-        return "*" + newInfo;
+        return "*" + infoOfuscada;
 
     }
+
+    /*
+     * otra forma mas procedural
+     * 
+     * public String ofuscarInfoMedioPago() { String newInfo = new String();
+     * 
+     * for (int i = (this.getInfoMedioPago().length() - 1); i >
+     * (this.getInfoMedioPago().length() - 4); i--) {
+     * 
+     * newInfo = this.getInfoMedioPago().charAt(i) + newInfo;
+     * 
+     * }
+     * 
+     * return "*" + newInfo;
+     * 
+     * }
+     */
 }

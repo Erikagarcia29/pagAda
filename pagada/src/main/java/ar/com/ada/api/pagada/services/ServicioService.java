@@ -29,7 +29,7 @@ public class ServicioService {
     ServicioRepository servicioRepo;
 
     @Autowired
-    PagoRepository pagoRepository;
+    PagoRepository pagoRepo;
 
     public List<TipoServicio> listarTipoServicios() {
 
@@ -257,7 +257,19 @@ public class ServicioService {
 
     public Pago buscarPagoPorId(Integer pagoId) {
 
-        return pagoRepository.findByPagoId(pagoId);
+        return pagoRepo.findByPagoId(pagoId);
+
+    }
+
+    public List<Pago> buscarPagosPorEmpresaId(Integer empresaId) {
+
+        return pagoRepo.findPagosByEmpresaId(empresaId);
+
+    }
+
+    public List<Pago> buscarPagosPorDeudorId(Integer deudorId) {
+
+        return pagoRepo.findPagosByDeudorId(deudorId);
 
     }
 

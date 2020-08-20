@@ -249,7 +249,7 @@ class DemoApplicationTests {
 
 	@Test
 	void PagoInfoOfuscada(){
-		Pago pago = new pago();
+		Pago pago = new Pago();
 		pago.setInfoMedioPago("123456789");
 		String infoOfuscada = pago.ofuscarInfoMedioPago();
 		assertEquals("*789", infoOfuscada);
