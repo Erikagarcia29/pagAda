@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,8 @@ import ar.com.ada.api.pagada.entities.Empresa;
 import ar.com.ada.api.pagada.entities.OperacionPago;
 import ar.com.ada.api.pagada.entities.Servicio;
 import ar.com.ada.api.pagada.entities.TipoServicio;
+import ar.com.ada.api.pagada.entities.Servicio.EstadoEnum;
+import ar.com.ada.api.pagada.models.request.ActualizarServicioRequest;
 import ar.com.ada.api.pagada.models.request.InfoPagoRequest;
 import ar.com.ada.api.pagada.models.request.ServicioRequest;
 import ar.com.ada.api.pagada.models.response.GenericResponse;
@@ -97,7 +100,7 @@ public class ServicioController {
 
         // Comenzamos con la 3) crear en la base de datos
 
-        servicioService.crearSevicio(servicio);
+        servicioService.crearServicio(servicio);
 
         if (servicio.getServicioId() == null) {
 
@@ -382,6 +385,50 @@ public class ServicioController {
         response.message = "Servicio actualizado!";
         response.id = servicio.getServicioId();
         return ResponseEntity.ok(response);
+    }
+    /*
+     * 6) Anular un servicio: DELETE /api/servicios/{id} : debe poner en estado
+     * ANULADO a un servicio.
+     * Hacer un Test qeu valide que cuando se "anule" un servicio mediante el
+     * service, verificar en la base de datos que haya sido realmente anulado.
+     */
+
+    @DeleteMapping("/api/servicios/{id}")
+
+    public ResponseEntity<GenericResponse> anularServicio(@PathVariable Integer id) {
+
+        // buscar el servicio x id//
+
+        // setear el estado//
+
+        // grabar DB//
+
+        GenericResponse servicioAnulado = new GenericResponse();
+
+        Servicio servicio = servicioService.buscarServicioPorId(id);
+
+        if (servicio.getEstadoId() == EstadoEnum.PAGADO) {
+
+            servicioAnulado.isOk = false;
+
+            servicioAnulado.message = "No se puede anular un servicio pago";
+
+            return ResponseEntity.badRequest().body(servicioAnulado); // Error http 400
+
+        }
+
+        servicio.setEstadoId(EstadoEnum.ANULADO);
+
+        servicioService.grabar(servicio);
+
+        servicioAnulado.isOk = true;
+
+        servicioAnulado.id = id;
+
+        servicioAnulado.message = "Se anulo con exito";
+
+        return ResponseEntity.ok(servicioAnulado);
+
     }
 
 }
