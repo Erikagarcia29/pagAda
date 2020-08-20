@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,15 +30,10 @@ import ar.com.ada.api.pagada.services.ServicioService.ServicioValidacionEnum;
 public class ServicioController {
 
     @Autowired
-
     EmpresaService empresaService;
-
     @Autowired
-
     DeudorService deudorService;
-
     @Autowired
-
     ServicioService servicioService;
 
     @PostMapping("/api/servicios")
@@ -146,106 +142,106 @@ public class ServicioController {
 
             @RequestParam(name = "empresa", required = false) Integer empresa,
 
-            @RequestParam(name = "deudor", required = false) Integer deudor, 
+            @RequestParam(name = "deudor", required = false) Integer deudor,
 
-            @RequestParam(name = "historico",required = false) boolean historico ,
-            @RequestParam(name = "codigo",required = false) String codigo) {
+            @RequestParam(name = "historico", required = false) boolean historico,
+            @RequestParam(name = "codigo", required = false) String codigo) {
 
-            
         List<Servicio> servicios = new ArrayList<>();
-                //"/api/servicio?empresa=33393&codigo=383811&deudor=9929229"
-                //version alexmary
-        if (codigo != null){  
+        // "/api/servicio?empresa=33393&codigo=383811&deudor=9929229"
+        // version alexmary
+        if (codigo != null) {
 
             servicios = servicioService.listarPorCodigoBarras(codigo);
         }
 
-        else if  ( empresa != null && deudor == null){ 
-           
+        else if (empresa != null && deudor == null) {
 
             servicios = servicioService.listarServiciosPendientesPorEmpresaId(empresa);
 
-        }else if (empresa != null && deudor != null && !historico ){
+        } else if (empresa != null && deudor != null && !historico) {
             servicios = servicioService.listarServiciosPendientesPorDeudorIdyEmpresaId(deudor, empresa);
 
-        }else if (empresa != null && deudor != null && historico ){
+        } else if (empresa != null && deudor != null && historico) {
             servicios = servicioService.historicoPorEmpresaIdyDeudorId(deudor, empresa);
-        }else{
+        } else {
             servicios = servicioService.listarServicios();
         }
 
-             // LISTA los que son de la empresa y son pendientes.
+        // LISTA los que son de la empresa y son pendientes.
 
-                servicios = servicioService.listarServiciosPendientesPorEmpresaId(empresa);
+        servicios = servicioService.listarServiciosPendientesPorEmpresaId(empresa);
 
-             // "/api/servicios?deudor=9929229"
-                
-             //Version Ailin
-                /*Integer empresaId = empresa;
+        // "/api/servicios?deudor=9929229"
 
-             Integer deudorId = deudor;
-            String codigoBarras = codigo;
-            if(codigoBarras != null){
-     
-             return ResponseEntity.ok(servicioService.listarPorCodigoBarras(codigoBarras));
-     
-                }else if(empresaId == null){
-     
-             return ResponseEntity.ok(servicioService.listarServicios());
-     
-                    }else if(deudorId == null){
-     
-            return ResponseEntity.ok(servicioService.listarServiciosPendientesPorEmpresaId(empresaId));
-      
-                        }else if(historico){
-     
-                return ResponseEntity.ok(servicioService.historicoPorEmpresaIdYDeudorId(empresaId, deudorId));
-             
-            }
-     
-            return ResponseEntity.ok(servicioService.PendientesPorEmpresaIdYDeudorId(empresaId, deudorId));
-     
-             */
-     
-             /* OTRA FORMA
-     
-                    if(codigo != null){
-     
-                         return ResponseEntity.ok(servicioService.listarPorCodigoBarras(codigo));
-                            if(empresa == null){
-     
-     
-                    return ResponseEntity.ok(servicioService.listarServicios());
-     
-                                if(deudor == null){
-     
-                 
-                                    return ResponseEntity.ok(servicioService.listarServiciosPendientesPorEmpresaId(empresa));
-     
-     
-             
-                        if(historico){
-                            return ResponseEntity.ok(servicioService.historicoPorEmpresaIdYDeudorId(empresa, deudor));
-     
-                            }
-     
-                            return ResponseEntity.ok(servicioService.PendientesPorEmpresaIdYDeudorId(empresa, deudor));
-             
-          */                  
-     
-          return ResponseEntity.ok(servicios);
-        }
+        // Version Ailin
+        /*
+         * Integer empresaId = empresa;
+         * 
+         * Integer deudorId = deudor; String codigoBarras = codigo; if(codigoBarras !=
+         * null){
+         * 
+         * return
+         * ResponseEntity.ok(servicioService.listarPorCodigoBarras(codigoBarras));
+         * 
+         * }else if(empresaId == null){
+         * 
+         * return ResponseEntity.ok(servicioService.listarServicios());
+         * 
+         * }else if(deudorId == null){
+         * 
+         * return
+         * ResponseEntity.ok(servicioService.listarServiciosPendientesPorEmpresaId(
+         * empresaId));
+         * 
+         * }else if(historico){
+         * 
+         * return
+         * ResponseEntity.ok(servicioService.historicoPorEmpresaIdYDeudorId(empresaId,
+         * deudorId));
+         * 
+         * }
+         * 
+         * return
+         * ResponseEntity.ok(servicioService.PendientesPorEmpresaIdYDeudorId(empresaId,
+         * deudorId));
+         * 
+         */
 
-    /** 
-     * Pagar Servicio:
-     * POST /api/servicios/{id}: paga un servicio especifico con el siguiente
-     * Payload(RequestBody):
-     * {
-     * "importePagado": 3999.00,
-     * "fechaPago": "2020-05-06",
-     * "medioPago": "TRANSFERENCIA", //TARJETA, DEPOSITO, ETC
-     * "infoMedioPago": "nroTarjeta/cbu/etc"
-     * }
+        /*
+         * OTRA FORMA 
+         * if(codigo != null){
+         * 
+         * return ResponseEntity.ok(servicioService.listarPorCodigoBarras(codigo));
+         * if(empresa == null){
+         * return ResponseEntity.ok(servicioService.listarServicios());
+         * 
+         * if(deudor == null){
+          
+         * return
+         * ResponseEntity.ok(servicioService.listarServiciosPendientesPorEmpresaId(
+         * empresa));
+         * 
+         * if(historico){ return
+         * ResponseEntity.ok(servicioService.historicoPorEmpresaIdYDeudorId(empresa,
+         * deudor));
+         * 
+         * }
+         * 
+         * return
+         * ResponseEntity.ok(servicioService.PendientesPorEmpresaIdYDeudorId(empresa,
+         * deudor));
+         * 
+         */
+
+        return ResponseEntity.ok(servicios);
+    }
+
+    /**
+     * Pagar Servicio: POST /api/servicios/{id}: paga un servicio especifico con el
+     * siguiente Payload(RequestBody): { "importePagado": 3999.00, "fechaPago":
+     * "2020-05-06", "medioPago": "TRANSFERENCIA", //TARJETA, DEPOSITO, ETC
+     * "infoMedioPago": "nroTarjeta/cbu/etc" }
      */
 
     @PostMapping("/api/servicios/{id}")
@@ -256,7 +252,7 @@ public class ServicioController {
 
         // To do
         // buscar servicio por id
-         // verficar que este pendiente de pago
+        // verficar que este pendiente de pago
         // instanciar pago
         // validar si se esta pagando el total o solo una parte
         // si se se pago pasarlo de PENDIENTE a PAGADO (al Servicio)
@@ -270,17 +266,12 @@ public class ServicioController {
 
         // En este caso en forma generica y con pocas ganas de hacer algo particular.
 
-        /* 
-         * if (pagoResult.getResultado() != OperacionPagoEnum.REALIZADO) {
-         * r.isOk = false;
-         * r.message = "El pago fue rechazado, motivo : " + pagoResult.getResultado();
-         * return ResponseEntity.badRequest().body(r);
-         * } else {
-         * r.isOk = true;
-         * r.id = pagoResult.getPago().getPagoId();
-         * r.message = "se realizo el pago con exito";
-         * return ResponseEntity.ok(r);
-         * }
+        /*
+         * if (pagoResult.getResultado() != OperacionPagoEnum.REALIZADO) { r.isOk =
+         * false; r.message = "El pago fue rechazado, motivo : " +
+         * pagoResult.getResultado(); return ResponseEntity.badRequest().body(r); } else
+         * { r.isOk = true; r.id = pagoResult.getPago().getPagoId(); r.message =
+         * "se realizo el pago con exito"; return ResponseEntity.ok(r); }
          */
 
         // En este caso customizo las respuestas
@@ -343,15 +334,53 @@ public class ServicioController {
 
     // public ResponseEntity<GenericResponse> crearPago(@RequestBody InfoPagoRequest
     // pago){
-
     // GenericResponse r = new GenericResponse();
-
     // // To do: instanciarlo
-
     // // grabarlo en la db a traves del service.
-
     // return ResponseEntity.ok(r);
-
     // }
+    /*
+    * 5) Modificar Vencimiento e Importe de un Servicio PUT /api/servicios/{id}
+    * Payload esperado(RequestBody) { "importe": 939393, "vencimiento":
+    * "2020-05-20" }
+    */
+     
+
+    @PutMapping("/api/servicios/{id}")
+
+    public ResponseEntity<GenericResponse> actualizarServicio(@PathVariable Integer id,
+
+            @RequestBody ActualizarServicioRequest actualizarS) {
+
+        // Buscar el servicio
+        // actualizar propiedades
+        // grabarlo
+
+        
+        Servicio servicio = servicioService.buscarServicioPorId(id)
+
+        servicio.setImporte(actualizarS.importe);
+        servicio.setFechaVencimiento(actualizarS.vencimiento);
+        servicioService.grabar(servicio);
+
+
+
+       GenericResponse response = new GenericResponse();
+        response.isOk = true;
+        response.message = "Servicio actualizado!";
+        response.id = servicio.getServicioId();
+        return ResponseEntity.ok(response);
+    }
 
 }
+
+
+
+        
+
+
+
+        
+  
+
+
