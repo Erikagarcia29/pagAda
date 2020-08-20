@@ -77,8 +77,13 @@ public class ServicioService {
 
     }
 
-    public Servicio crearSevicio(Servicio servicio) {
+    public Servicio crearServicio(Servicio servicio) {
 
+        return grabar(servicio);
+
+    }
+
+    public Servicio grabar(Servicio servicio) {
         // Si agreggo validacion justo antes de la creacion
 
         if (this.validarServicio(servicio) != ServicioValidacionEnum.OK)
@@ -273,40 +278,15 @@ public class ServicioService {
 
     }
 
-    public void grabar(Servicio servicio) {
+    /*
+     * Modificar Vencimiento e Importe de un Servicio
+     * 
+     * PUT /api/servicios/{id}
+     * 
+     * Payload esperado(RequestBody) { "importe": 939393, "vencimiento":
+     * "2020-05-20"
+     * 
+     * }
+     */
 
-        servicioRepo.save(servicio);
-    }
-     /*Modificar Vencimiento e Importe de un Servicio
-
-PUT /api/servicios/{id}
-
-Payload esperado(RequestBody)
-    {
-   "importe": 939393,
-       "vencimiento": "2020-05-20"
-
-}*/
-	   
-}  
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
+}

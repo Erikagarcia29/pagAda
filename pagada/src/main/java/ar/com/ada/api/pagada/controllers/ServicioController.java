@@ -209,15 +209,14 @@ public class ServicioController {
          */
 
         /*
-         * OTRA FORMA 
-         * if(codigo != null){
+         * OTRA FORMA if(codigo != null){
          * 
          * return ResponseEntity.ok(servicioService.listarPorCodigoBarras(codigo));
-         * if(empresa == null){
-         * return ResponseEntity.ok(servicioService.listarServicios());
+         * if(empresa == null){ return
+         * ResponseEntity.ok(servicioService.listarServicios());
          * 
          * if(deudor == null){
-          
+         * 
          * return
          * ResponseEntity.ok(servicioService.listarServiciosPendientesPorEmpresaId(
          * empresa));
@@ -340,11 +339,10 @@ public class ServicioController {
     // return ResponseEntity.ok(r);
     // }
     /*
-    * 5) Modificar Vencimiento e Importe de un Servicio PUT /api/servicios/{id}
-    * Payload esperado(RequestBody) { "importe": 939393, "vencimiento":
-    * "2020-05-20" }
-    */
-     
+     * 5) Modificar Vencimiento e Importe de un Servicio PUT /api/servicios/{id}
+     * Payload esperado(RequestBody) { "importe": 939393, "vencimiento":
+     * "2020-05-20" }
+     */
 
     @PutMapping("/api/servicios/{id}")
 
@@ -352,20 +350,34 @@ public class ServicioController {
 
             @RequestBody ActualizarServicioRequest actualizarS) {
 
+        GenericResponse response = new GenericResponse();
+
         // Buscar el servicio
         // actualizar propiedades
         // grabarlo
 
-        
-        Servicio servicio = servicioService.buscarServicioPorId(id)
+        Servicio servicio = servicioService.buscarServicioPorId(id);
 
         servicio.setImporte(actualizarS.importe);
         servicio.setFechaVencimiento(actualizarS.vencimiento);
         servicioService.grabar(servicio);
 
+        // Agrego validacion adicional, mas alla de ue la hago en grabar.
 
+        ServicioValidacionEnum servicioVResultado;
 
-       GenericResponse response = new GenericResponse();
+        servicioVResultado = servicioService.validarServicio(servicio);
+
+        if (servicioVResultado != ServicioValidacionEnum.OK) {
+
+            response.isOk = false;
+
+            response.message = "Hubo un error en la validacion del servicio " + servicioVResultado;
+
+            return ResponseEntity.badRequest().body(response); // Error http 400
+
+        }
+
         response.isOk = true;
         response.message = "Servicio actualizado!";
         response.id = servicio.getServicioId();
@@ -373,14 +385,3 @@ public class ServicioController {
     }
 
 }
-
-
-
-        
-
-
-
-        
-  
-
-
